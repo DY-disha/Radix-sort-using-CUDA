@@ -1,0 +1,16 @@
+PASS: 10000_random
+PASS: 10000_all_equal
+PASS: 10000_few_distinct
+PASS: 10000_sorted
+PASS: 10000_reversed
+PASS: 100000_random
+PASS: 100000_all_equal
+PASS: 100000_few_distinct
+PASS: 100000_sorted
+PASS: 100000_reversed
+PASS: 1000000_random
+PASS: 1000000_all_equal
+PASS: 1000000_few_distinct
+PASS: 1000000_sorted
+PASS: 1000000_reversed
+VALID: all 15 datasets match CPU std::sort.

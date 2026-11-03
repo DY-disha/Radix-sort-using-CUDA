@@ -1,0 +1,19 @@
+Compiling sort_u32.fut...
+Reporting arithmetic mean runtime of at least 20 runs for each dataset (min 0.5s).
+
+sort_u32.fut:
+10000_random:                643μs (95% CI: [     629.6,      657.8])
+10000_all_equal:             520μs (95% CI: [     519.7,      521.4])
+10000_few_distinct:          514μs (95% CI: [     513.5,      515.5])
+10000_sorted:                517μs (95% CI: [     515.3,      520.9])
+10000_reversed:              515μs (95% CI: [     514.3,      515.6])
+100000_random:               655μs (95% CI: [     654.4,      654.9])
+100000_all_equal:            655μs (95% CI: [     654.3,      654.8])
+100000_few_distinct:         651μs (95% CI: [     651.0,      651.7])
+100000_sorted:               651μs (95% CI: [     649.9,      651.8])
+100000_reversed:             647μs (95% CI: [     647.2,      647.5])
+1000000_random:             2873μs (95% CI: [    2872.5,     2874.1])
+1000000_all_equal:          2884μs (95% CI: [    2883.3,     2885.5])
+1000000_few_distinct:       2877μs (95% CI: [    2876.2,     2878.3])
+1000000_sorted:             2877μs (95% CI: [    2875.7,     2877.7])
+1000000_reversed:           2883μs (95% CI: [    2882.6,     2884.6])

@@ -1,0 +1,7 @@
+GPU: NVIDIA A100-PCIE-40GB
+Startup warmup: >=1 second, both variants.
+Per case: 500 warmup calls per variant; 20 measured pairs; 100 calls per batch.
+AB/BA alternating order; original input at every shift; allocation/copies/checks excluded.
+Reported time is batched elapsed time per call, including possible launch gaps.
+PASS: 4320 boundary/reference checks.
+PASS: both variants matched CPU reference for all 60 benchmark cases.

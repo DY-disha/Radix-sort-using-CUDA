@@ -1,0 +1,8 @@
+GPU: NVIDIA A100-PCIE-40GB
+CUDA configuration: B=256 Q=22 r=8 bins=256 tile=5632
+Warm-up batches: 5
+Measured samples: 20
+Calls per sample: 100
+Timing excludes allocation, offset generation, transfers, and validation.
+PASS: 132 scatter boundary/reference checks.
+PASS: 60 scatter benchmark cases matched the CPU reference.

@@ -1,0 +1,184 @@
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/block_histogram.cu tests/test_histogram.cu -o build/histogram_test
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/block_histogram.cu tests/test_histogram_offsets.cu -o build/integration_test
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/scatter.cu tests/test_scatter_unit.cu -o build/scatter_test
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/block_histogram.cu src/scatter.cu src/radix_sort.cu tests/test_radix_sort.cu -o build/radix_sort_test
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments tests/test_transpose.cu -o build/test_transpose
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments tests/test_scan.cu -o build/test_scan
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments tests/test_global_offsets.cu -o build/test_global_offsets
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/scatter.cu tests/test_scatter.cpp tests/reference/radix_sort_cpu.cpp -o build/scatter_demo
+tests/reference/radix_sort_cpu.cpp:6:9: warning: #pragma once in main file
+ #pragma once
+         ^~~~
+g++ -O2 -std=c++17 -Iinclude -Itests/reference -Iexperiments tests/test_cpu.cpp -o build/test_cpu
+./build/test_cpu
+Calculated offsets (rows are bins):
+Bin 0: 0 2 3 
+Bin 1: 3 4 6 
+Bin 2: 7 8 9 
+Bin 3: 10 10 10 
+PASS: All 12 offsets match the expected values.
+./build/histogram_test
+GPU HISTOGRAM VALID: 1680 cases match CPU reference.
+B=256 Q=22 TILE=5632; layout hist[block * H + bin], unsigned 32-bit counts
+./build/integration_test
+INTEGRATION VALID: 192 cases; histogram and both offset implementations match CPU references.
+./build/test_transpose
+Transposed histogram (rows are bins):
+Bin 0: 2 1 0 
+Bin 1: 1 2 1 
+Bin 2: 1 1 1 
+Bin 3: 0 0 2 
+PASS: All 12 transposed counts match.
+./build/test_scan
+PASS: 12-entry histogram [original + workspace]
+Offsets: 0 2 3 3 4 6 7 8 9 10 10 10 
+PASS: n=0, mode=0 [original + workspace]
+PASS: n=0, mode=1 [original + workspace]
+PASS: n=0, mode=2 [original + workspace]
+PASS: n=1, mode=0 [original + workspace]
+PASS: n=1, mode=1 [original + workspace]
+PASS: n=1, mode=2 [original + workspace]
+PASS: n=2, mode=0 [original + workspace]
+PASS: n=2, mode=1 [original + workspace]
+PASS: n=2, mode=2 [original + workspace]
+PASS: n=3, mode=0 [original + workspace]
+PASS: n=3, mode=1 [original + workspace]
+PASS: n=3, mode=2 [original + workspace]
+PASS: n=255, mode=0 [original + workspace]
+PASS: n=255, mode=1 [original + workspace]
+PASS: n=255, mode=2 [original + workspace]
+PASS: n=256, mode=0 [original + workspace]
+PASS: n=256, mode=1 [original + workspace]
+PASS: n=256, mode=2 [original + workspace]
+PASS: n=257, mode=0 [original + workspace]
+PASS: n=257, mode=1 [original + workspace]
+PASS: n=257, mode=2 [original + workspace]
+PASS: n=511, mode=0 [original + workspace]
+PASS: n=511, mode=1 [original + workspace]
+PASS: n=511, mode=2 [original + workspace]
+PASS: n=512, mode=0 [original + workspace]
+PASS: n=512, mode=1 [original + workspace]
+PASS: n=512, mode=2 [original + workspace]
+PASS: n=513, mode=0 [original + workspace]
+PASS: n=513, mode=1 [original + workspace]
+PASS: n=513, mode=2 [original + workspace]
+PASS: n=514, mode=0 [original + workspace]
+PASS: n=514, mode=1 [original + workspace]
+PASS: n=514, mode=2 [original + workspace]
+PASS: n=1000, mode=0 [original + workspace]
+PASS: n=1000, mode=1 [original + workspace]
+PASS: n=1000, mode=2 [original + workspace]
+PASS: n=1023, mode=0 [original + workspace]
+PASS: n=1023, mode=1 [original + workspace]
+PASS: n=1023, mode=2 [original + workspace]
+PASS: n=1024, mode=0 [original + workspace]
+PASS: n=1024, mode=1 [original + workspace]
+PASS: n=1024, mode=2 [original + workspace]
+PASS: n=1025, mode=0 [original + workspace]
+PASS: n=1025, mode=1 [original + workspace]
+PASS: n=1025, mode=2 [original + workspace]
+PASS: n=2048, mode=0 [original + workspace]
+PASS: n=2048, mode=1 [original + workspace]
+PASS: n=2048, mode=2 [original + workspace]
+PASS: n=4096, mode=0 [original + workspace]
+PASS: n=4096, mode=1 [original + workspace]
+PASS: n=4096, mode=2 [original + workspace]
+PASS: n=10000, mode=0 [original + workspace]
+PASS: n=10000, mode=1 [original + workspace]
+PASS: n=10000, mode=2 [original + workspace]
+PASS: All 55 scan cases matched expected results for both implementations.
+./build/test_global_offsets
+GPU offsets (rows are bins):
+Bin 0: 0 2 3 
+Bin 1: 3 4 6 
+Bin 2: 7 8 9 
+Bin 3: 10 10 10 
+PASS: 3-block, 4-bin example [original + workspace + multiblock]
+PASS: blocks=0, bins=4, n=0, mode=0 [original + workspace + multiblock]
+PASS: blocks=0, bins=4, n=0, mode=1 [original + workspace + multiblock]
+PASS: blocks=0, bins=4, n=0, mode=2 [original + workspace + multiblock]
+PASS: blocks=0, bins=4, n=0, mode=3 [original + workspace + multiblock]
+PASS: blocks=1, bins=1, n=1, mode=0 [original + workspace + multiblock]
+PASS: blocks=1, bins=1, n=1, mode=1 [original + workspace + multiblock]
+PASS: blocks=1, bins=1, n=1, mode=2 [original + workspace + multiblock]
+PASS: blocks=1, bins=1, n=1, mode=3 [original + workspace + multiblock]
+PASS: blocks=1, bins=4, n=4, mode=0 [original + workspace + multiblock]
+PASS: blocks=1, bins=4, n=4, mode=1 [original + workspace + multiblock]
+PASS: blocks=1, bins=4, n=4, mode=2 [original + workspace + multiblock]
+PASS: blocks=1, bins=4, n=4, mode=3 [original + workspace + multiblock]
+PASS: blocks=3, bins=4, n=12, mode=0 [original + workspace + multiblock]
+PASS: blocks=3, bins=4, n=12, mode=1 [original + workspace + multiblock]
+PASS: blocks=3, bins=4, n=12, mode=2 [original + workspace + multiblock]
+PASS: blocks=3, bins=4, n=12, mode=3 [original + workspace + multiblock]
+PASS: blocks=7, bins=16, n=112, mode=0 [original + workspace + multiblock]
+PASS: blocks=7, bins=16, n=112, mode=1 [original + workspace + multiblock]
+PASS: blocks=7, bins=16, n=112, mode=2 [original + workspace + multiblock]
+PASS: blocks=7, bins=16, n=112, mode=3 [original + workspace + multiblock]
+PASS: blocks=16, bins=16, n=256, mode=0 [original + workspace + multiblock]
+PASS: blocks=16, bins=16, n=256, mode=1 [original + workspace + multiblock]
+PASS: blocks=16, bins=16, n=256, mode=2 [original + workspace + multiblock]
+PASS: blocks=16, bins=16, n=256, mode=3 [original + workspace + multiblock]
+PASS: blocks=17, bins=16, n=272, mode=0 [original + workspace + multiblock]
+PASS: blocks=17, bins=16, n=272, mode=1 [original + workspace + multiblock]
+PASS: blocks=17, bins=16, n=272, mode=2 [original + workspace + multiblock]
+PASS: blocks=17, bins=16, n=272, mode=3 [original + workspace + multiblock]
+PASS: blocks=31, bins=16, n=496, mode=0 [original + workspace + multiblock]
+PASS: blocks=31, bins=16, n=496, mode=1 [original + workspace + multiblock]
+PASS: blocks=31, bins=16, n=496, mode=2 [original + workspace + multiblock]
+PASS: blocks=31, bins=16, n=496, mode=3 [original + workspace + multiblock]
+PASS: blocks=32, bins=16, n=512, mode=0 [original + workspace + multiblock]
+PASS: blocks=32, bins=16, n=512, mode=1 [original + workspace + multiblock]
+PASS: blocks=32, bins=16, n=512, mode=2 [original + workspace + multiblock]
+PASS: blocks=32, bins=16, n=512, mode=3 [original + workspace + multiblock]
+PASS: blocks=2, bins=256, n=512, mode=0 [original + workspace + multiblock]
+PASS: blocks=2, bins=256, n=512, mode=1 [original + workspace + multiblock]
+PASS: blocks=2, bins=256, n=512, mode=2 [original + workspace + multiblock]
+PASS: blocks=2, bins=256, n=512, mode=3 [original + workspace + multiblock]
+PASS: blocks=27, bins=19, n=513, mode=0 [original + workspace + multiblock]
+PASS: blocks=27, bins=19, n=513, mode=1 [original + workspace + multiblock]
+PASS: blocks=27, bins=19, n=513, mode=2 [original + workspace + multiblock]
+PASS: blocks=27, bins=19, n=513, mode=3 [original + workspace + multiblock]
+PASS: blocks=33, bins=16, n=528, mode=0 [original + workspace + multiblock]
+PASS: blocks=33, bins=16, n=528, mode=1 [original + workspace + multiblock]
+PASS: blocks=33, bins=16, n=528, mode=2 [original + workspace + multiblock]
+PASS: blocks=33, bins=16, n=528, mode=3 [original + workspace + multiblock]
+PASS: blocks=64, bins=16, n=1024, mode=0 [original + workspace + multiblock]
+PASS: blocks=64, bins=16, n=1024, mode=1 [original + workspace + multiblock]
+PASS: blocks=64, bins=16, n=1024, mode=2 [original + workspace + multiblock]
+PASS: blocks=64, bins=16, n=1024, mode=3 [original + workspace + multiblock]
+PASS: blocks=41, bins=25, n=1025, mode=0 [original + workspace + multiblock]
+PASS: blocks=41, bins=25, n=1025, mode=1 [original + workspace + multiblock]
+PASS: blocks=41, bins=25, n=1025, mode=2 [original + workspace + multiblock]
+PASS: blocks=41, bins=25, n=1025, mode=3 [original + workspace + multiblock]
+PASS: blocks=256, bins=16, n=4096, mode=0 [original + workspace + multiblock]
+PASS: blocks=256, bins=16, n=4096, mode=1 [original + workspace + multiblock]
+PASS: blocks=256, bins=16, n=4096, mode=2 [original + workspace + multiblock]
+PASS: blocks=256, bins=16, n=4096, mode=3 [original + workspace + multiblock]
+PASS: blocks=625, bins=16, n=10000, mode=0 [original + workspace + multiblock]
+PASS: blocks=625, bins=16, n=10000, mode=1 [original + workspace + multiblock]
+PASS: blocks=625, bins=16, n=10000, mode=2 [original + workspace + multiblock]
+PASS: blocks=625, bins=16, n=10000, mode=3 [original + workspace + multiblock]
+PASS: blocks=4096, bins=16, n=65536, mode=0 [original + workspace + multiblock]
+PASS: blocks=4096, bins=16, n=65536, mode=1 [original + workspace + multiblock]
+PASS: blocks=4096, bins=16, n=65536, mode=2 [original + workspace + multiblock]
+PASS: blocks=4096, bins=16, n=65536, mode=3 [original + workspace + multiblock]
+PASS: blocks=16384, bins=16, n=262144, mode=0 [original + workspace + multiblock]
+PASS: blocks=16384, bins=16, n=262144, mode=1 [original + workspace + multiblock]
+PASS: blocks=16384, bins=16, n=262144, mode=2 [original + workspace + multiblock]
+PASS: blocks=16384, bins=16, n=262144, mode=3 [original + workspace + multiblock]
+PASS: blocks=65536, bins=16, n=1048576, mode=0 [original + workspace + multiblock]
+PASS: blocks=65536, bins=16, n=1048576, mode=1 [original + workspace + multiblock]
+PASS: blocks=65536, bins=16, n=1048576, mode=2 [original + workspace + multiblock]
+PASS: blocks=65536, bins=16, n=1048576, mode=3 [original + workspace + multiblock]
+PASS: All 77 global-offset cases matched CPU reference for all three implementations.
+./build/scatter_test
+SCATTER UNIT TESTS PASSED: 176 cases.
+./build/scatter_demo
+0x1 0x1
+0x2 0x2
+0x100 0x100
+0x10000 0x10000
+Outputs match: true
+./build/radix_sort_test
+RADIX SORT VALID: 78 datasets; 312 stable digit-pass checks; 156 full-sort checks.
+B=256 Q=22 r=8 TILE=5632

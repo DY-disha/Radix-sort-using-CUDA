@@ -1,0 +1,9 @@
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/block_histogram.cu src/scatter.cu src/radix_sort.cu benchmarks/benchmark_cuda_sort.cu -o build/benchmark_cuda_sort
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments benchmarks/benchmark_cub_sort.cu -o build/benchmark_cub_sort
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/block_histogram.cu benchmarks/benchmark_histogram.cu -o build/benchmark_histogram
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/block_histogram.cu experiments/block_histogram_warp.cu benchmarks/benchmark_histogram_compare.cu -o build/benchmark_histogram_compare
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments src/scatter.cu benchmarks/benchmark_scatter.cu -o build/scatter_benchmark
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments benchmarks/benchmark_global_offsets.cu -o build/benchmark_global_offsets
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments benchmarks/benchmark_workspace.cu -o build/benchmark_workspace
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments benchmarks/benchmark_offsets_cub.cu -o build/benchmark_offsets_cub
+nvcc -O2 -std=c++17 -lineinfo -arch=sm_80 -Iinclude -Itests/reference -Iexperiments benchmarks/benchmark_offset_tuning.cu -o build/benchmark_offset_tuning

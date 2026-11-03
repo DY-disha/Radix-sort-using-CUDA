@@ -1,0 +1,4 @@
+GPU: NVIDIA A100-PCIE-40GB
+Warmups: 5; measurements: 20
+Standalone histogram; original input order for every shift.
+PASS: all 60 histogram cases matched CPU reference.

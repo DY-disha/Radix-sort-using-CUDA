@@ -1,0 +1,14 @@
+nvcc -O2 -std=c++17 -arch=sm_80 -lineinfo block_histogram.cu main.cu -o build/histogram_test
+nvcc -O2 -std=c++17 -arch=sm_80 -lineinfo block_histogram.cu test_histogram_offsets.cu -o build/integration_test
+nvcc -O2 -std=c++17 -arch=sm_80 -lineinfo scatter/scatter.cu scatter/test_scatter_unit.cu -o build/scatter_test
+nvcc -O2 -std=c++17 -arch=sm_80 -lineinfo block_histogram.cu scatter/scatter.cu radix_sort.cu test_radix_sort.cu -o build/radix_sort_test
+./build/histogram_test
+GPU HISTOGRAM VALID: 1680 cases match CPU reference.
+B=256 Q=22 TILE=5632; layout hist[block * H + bin], unsigned 32-bit counts
+./build/integration_test
+INTEGRATION VALID: 192 cases; histogram and both offset implementations match CPU references.
+./build/scatter_test
+SCATTER UNIT TESTS PASSED: 176 cases.
+./build/radix_sort_test
+RADIX SORT VALID: 78 datasets; 312 stable digit-pass checks; 156 full-sort checks.
+B=256 Q=22 r=8 TILE=5632
